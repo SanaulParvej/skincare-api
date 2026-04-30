@@ -2,4 +2,7 @@ fastapi
 uvicorn
 pandas
 openpyxl
+easyocr
+opencv-python-headless
+deep-translator
 python-multipart
