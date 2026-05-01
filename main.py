@@ -7,6 +7,12 @@ app = FastAPI()
 
 os.makedirs("uploads", exist_ok=True)
 
+
+@app.get("/")
+def home():
+    return {"message": "API Running Successfully"}
+
+
 @app.post("/scan")
 async def scan(file: UploadFile = File(...)):
 
