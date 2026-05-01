@@ -1,5 +1,4 @@
 import pandas as pd
-import easyocr
 import re
 from rapidfuzz import fuzz
 
@@ -18,13 +17,7 @@ harmful_list = (
 )
 
 # ----------------------------
-# OCR Reader Load Once
-# ----------------------------
-reader = easyocr.Reader(['en'], gpu=False)
-
-
-# ----------------------------
-# Clean OCR Text
+# Clean OCR / Input Text
 # ----------------------------
 def clean_ingredients(text):
     text = text.lower()
@@ -62,20 +55,14 @@ def calculate_risk(count):
 
 # ----------------------------
 # Main Analyze Function
+# text input version
 # ----------------------------
-def analyze_product(image_path):
+def analyze_product(raw_text):
 
-    # OCR read image
-    results = reader.readtext(image_path, detail=0)
-
-    raw_text = " ".join(results)
-
-    # Extract ingredients
     ingredients = clean_ingredients(raw_text)
 
     found = []
 
-    # Fuzzy Match Harmful Items
     for ingredient in ingredients:
         for harmful in harmful_list:
 
@@ -90,7 +77,6 @@ def analyze_product(image_path):
 
     found = list(set(found))
 
-    # Risk Result
     status, risk_score = calculate_risk(len(found))
 
     return {
