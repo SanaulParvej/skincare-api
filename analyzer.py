@@ -17,6 +17,25 @@ harmful_list = (
 )
 
 # ----------------------------
+# Ignore marketing / fake text
+# ----------------------------
+ignore_words = [
+    "no parabens",
+    "paraben free",
+    "cruelty free",
+    "not tested on animals",
+    "hypoallergenic",
+    "100 halal",
+    "100% halal",
+    "halal",
+    "vegan",
+    "organic",
+    "natural",
+    "dermatologically tested"
+]
+
+
+# ----------------------------
 # Clean OCR / Input Text
 # ----------------------------
 def clean_ingredients(text):
@@ -33,7 +52,7 @@ def clean_ingredients(text):
         item = re.sub(r'[^a-zA-Z0-9\s\-]', '', item)
         item = item.strip()
 
-        if len(item) > 2:
+        if len(item) > 2 and item not in ignore_words:
             final_items.append(item)
 
     return list(set(final_items))
@@ -55,7 +74,6 @@ def calculate_risk(count):
 
 # ----------------------------
 # Main Analyze Function
-# text input version
 # ----------------------------
 def analyze_product(raw_text):
 
