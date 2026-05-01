@@ -1,11 +1,12 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI
+from pydantic import BaseModel
 from analyzer import analyze_product
-import shutil
-import os
 
 app = FastAPI()
 
-os.makedirs("uploads", exist_ok=True)
+
+class ProductText(BaseModel):
+    text: str
 
 
 @app.get("/")
@@ -14,13 +15,8 @@ def home():
 
 
 @app.post("/scan")
-async def scan(file: UploadFile = File(...)):
+async def scan(data: ProductText):
 
-    file_path = f"uploads/{file.filename}"
-
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-
-    result = analyze_product(file_path)
+    result = analyze_product(data.text)
 
     return result
