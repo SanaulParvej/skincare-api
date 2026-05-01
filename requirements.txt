@@ -4,5 +4,4 @@ pandas
 openpyxl
 python-multipart
 opencv-python-headless
-easyocr
 rapidfuzz
